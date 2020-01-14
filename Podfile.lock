@@ -1,0 +1,16 @@
+PODS:
+  - LFLiveKit-ReplayKit (0.0.1)
+
+DEPENDENCIES:
+  - LFLiveKit-ReplayKit
+
+SPEC REPOS:
+  trunk:
+    - LFLiveKit-ReplayKit
+
+SPEC CHECKSUMS:
+  LFLiveKit-ReplayKit: 41197ffbd60306d10632543f822810d4f5835d77
+
+PODFILE CHECKSUM: 4a59523daa6bc7b5d01fe5051db90ad8990cd73f
+
+COCOAPODS: 1.8.4

@@ -1,0 +1,4 @@
+LiveStream.xcworkspace/xcuserdata/
+LiveStream.xcodeproj/xcuserdata/
+*.DS_Store
+Pods/
