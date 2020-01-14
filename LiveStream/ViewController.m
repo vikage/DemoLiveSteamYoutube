@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "CVPixelBufferTools.h"
 #import <ReplayKit/ReplayKit.h>
-@import LFLiveKit_ReplayKit;
+@import LFLiveKit;
 
 @interface ViewController ()<LFLiveSessionDelegate, AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate>
 @property (nonatomic, strong) IBOutlet UILabel *timeLabel;
@@ -23,6 +23,26 @@
 
 @interface LFLiveSession (Fix)
 - (void)pushVideo:(nullable CVPixelBufferRef)pixelBuffer;
+@end
+
+@implementation LFLiveSession (Fix)
+
+- (void)pushAudioBuffer:(CMSampleBufferRef)sampleBuffer {
+    AudioBufferList audioBufferList;
+    CMBlockBufferRef blockBuffer;
+    
+    CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer(sampleBuffer, NULL, &audioBufferList, sizeof(audioBufferList), NULL, NULL, 0, &blockBuffer);
+    
+    for( int y=0; y<audioBufferList.mNumberBuffers; y++ ) {
+        AudioBuffer audioBuffer = audioBufferList.mBuffers[y];
+        void* audio = audioBuffer.mData;
+        NSData *data = [NSData dataWithBytes:audio length:audioBuffer.mDataByteSize];
+        [self pushAudio:data];
+    }
+    
+    CFRelease(blockBuffer);
+}
+
 @end
 
 @implementation ViewController {
@@ -145,7 +165,7 @@
 
 - (void)startLive {
     LFLiveStreamInfo *stream = [[LFLiveStreamInfo alloc] init];
-    stream.url = @"rtmp://a.rtmp.youtube.com/live2/4fwf-uc50-wjm0-9we2";
+    stream.url = @"rtmps://live-api-s.facebook.com:443/rtmp/827061461065962?s_bl=1&s_sml=3&s_sw=0&s_vt=api-s&a=AbwDCrt0ZOIXaq8-";
     
     [self.liveSession startLive:stream];
 }
